@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: reactive-resilence4j-poc
+  webflux:
+    base-path: /reactive-resilence4j-poc
+server:
+  port: 8080	
+child:
+  base:
+   url: http://localhost:8181	 
+management:
+ endpoint.health.show-details: always
+ health.circuitbreakers.enabled: true		 
+resilience4j:
+   circuitbreaker:
+    instances:
+      reactive-resilence4j-poc:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        slidingWindowType: "COUNT_BASED"
+        minimumNumberOfCalls: 2
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 1
+        eventConsumerBufferSize: 10
